@@ -22,19 +22,6 @@ class AddForm extends HTMLElement {
 
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        console.log(this);
-        this.dispatchEvent(new CustomEvent('onDeleteTodo', {
-            detail: {
-                id: '1'
-            }
-        }))
-
-
-    }
-
-
     connectedCallback() {
         this.root.appendChild(addFormTemplate.content.cloneNode(true));
 
@@ -43,12 +30,12 @@ class AddForm extends HTMLElement {
 
         this.addFormElement.addEventListener('submit', (e) => {
             e.preventDefault();
-            console.log("here")
+
             this.dispatchEvent(new CustomEvent('onAddTodo', {
                 detail: {
                     body: {
-                        id: 4,
-                        title: 'Naya',
+                        id: Date.now(),
+                        title: this.newTodoElementTitle.value,
                         isComplete: false,
                         priority: 'low'
                     }
@@ -60,6 +47,7 @@ class AddForm extends HTMLElement {
 
 
     render() {
+        this.newTodoElementTitle = this.root.querySelector('.add-form__input');
 
     }
 
