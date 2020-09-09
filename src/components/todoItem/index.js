@@ -75,6 +75,22 @@ class TodoItem extends HTMLElement {
       this.render();
     });
 
+    this.togglePriority = this.root.querySelector('.task__priority');
+    this.togglePriority.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // this.priority = this.priority[this.priority.findIndexOf()];
+      this.priority = PRIORITIES[(PRIORITIES.indexOf(this.priority) + 1) % PRIORITIES.length];
+      this.dispatchEvent(
+        new CustomEvent('onToggleTodoPriority', {
+          detail: {
+            id: this.id,
+          },
+        }),
+      );
+      this.render();
+    });
+
     this.render();
   }
 

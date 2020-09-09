@@ -3,6 +3,9 @@ template.innerHTML = `
 <add-form></add-form>
 <ul class='todo-list'></ul>
 `;
+
+const PRIORITIES = ['low', 'med', 'high'];
+
 class TodoList extends HTMLElement {
   constructor() {
     super();
@@ -85,6 +88,21 @@ class TodoList extends HTMLElement {
     });
   }
 
+  togglePriority(e) {
+    const id = e.detail.id;
+
+    this.todos = this.todos.map((item) => {
+      // Toggle Priority state
+      if (item.id === id) {
+        return {
+          ...item,
+          priority: PRIORITIES[(PRIORITIES.indexOf(item.priority) + 1) % PRIORITIES.length],
+        };
+      }
+
+      return item;
+    });
+  }
   /**
    * Set Attributes fot todo-item web component element
    * @param {Object} todoItem  HTML element
@@ -113,6 +131,9 @@ class TodoList extends HTMLElement {
 
       // Register custom onToggleTodo event listener which we are going to dispatch from todo item
       todoItem.addEventListener('onToggleTodo', this.toggleTodo.bind(this));
+
+      // Register custom onToggleTodoPriority event listener which we are going to dispatch from todo item
+      todoItem.addEventListener('onToggleTodoPriority', this.togglePriority.bind(this));
 
       this.listElement.appendChild(todoItem);
     });
