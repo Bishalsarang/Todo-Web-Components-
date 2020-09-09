@@ -60,7 +60,22 @@ class TodoItem extends HTMLElement {
             }));
         });
 
+        this.toggleButton = this.root.querySelector('.check');
+        this.toggleButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            this.dispatchEvent(new CustomEvent('onToggleTodo', {
+                detail: {
+                    id: this.id
+                }
+            }))
+        })
+
         this.render();
+    }
+
+    disconnectedCallback() {
+        // Remove event Listeners
     }
 
 
@@ -76,13 +91,9 @@ class TodoItem extends HTMLElement {
 
         // isComplete
         const todoItemElementCheck = this.root.querySelector('.check__icon');
-        if (this.isComplete) {
-            console.log(this.isComplete)
-            todoItemElementCheck.classList.remove('hide');
-        } else {
+        !!this.isComplete ?
+            todoItemElementCheck.classList.remove('hide') :
             todoItemElementCheck.classList.add('hide');
-        }
-
     }
 
 }

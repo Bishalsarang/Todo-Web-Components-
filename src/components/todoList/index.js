@@ -1,6 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
-<ul  class='todo-list'></ul>
+<add-form ></add-form>
+<ul class='todo-list'></ul>
 `
 class TodoList extends HTMLElement {
 
@@ -38,24 +39,53 @@ class TodoList extends HTMLElement {
         this.root.appendChild(template.content.cloneNode(true));
         this.listElement = this.root.querySelector('.todo-list');
 
+
+        const addForm = this.root.querySelector('add-form');
+        addForm.addEventListener('onAddTodo', this.addTodo.bind(this));
+
         this.render();
     }
 
-    addTodo() {
-        this.todos.push({
-            title: 'Assignment',
-            isComplete: false
-        });
+    addTodo(e) {
+
+        const {
+            body: newToDo
+        } = e.detail;
+
+        this.todos = [...this.todos, newToDo];
         this.render();
     }
 
     /**
      * Receive id in custom event object and return new todo list after removing the id
-     * @param {Event Object} e 
+     * @param {Object} e Event Object
      */
     deleteTodo(e) {
+        console.log("haha from delete")
         const id = e.detail.id;
         this.todos = this.todos.filter(item => item.id !== parseInt(id));
+
+        this.render();
+    }
+
+    /**
+     * Receive id in custom event object and return new todo list after toggling the complete status of id
+     * @param {Object} e Event Object
+     */
+    toggleTodo(e) {
+        const id = e.detail.id;
+
+        this.todos = this.todos.map(item => {
+            // Toggle Complete state
+            if (item.id === parseInt(id)) {
+                return {
+                    ...item,
+                    isComplete: !item.isComplete
+                }
+            }
+
+            return item;
+        });
 
         this.render();
     }
@@ -77,13 +107,22 @@ class TodoList extends HTMLElement {
     render() {
         if (!this.listElement) return;
         this.listElement.innerHTML = '';
-        this.todos.forEach((item, index) => {
+
+
+        this.todos.forEach((item) => {
             const todoItem = document.createElement('todo-item');
 
             this.setItemAttributes(todoItem, item);
 
+            // Register custom onDeleteTodo event listener which we are going to dispatch from todo item
             todoItem.addEventListener('onDeleteTodo', this.deleteTodo.bind(this));
+
+
+            // Register custom onToggleTodo event listener which we are going to dispatch from todo item
+            todoItem.addEventListener('onToggleTodo', this.toggleTodo.bind(this));
+
             this.listElement.appendChild(todoItem);
+
         });
 
     }

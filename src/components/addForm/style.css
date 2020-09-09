@@ -1,0 +1,19 @@
+.add-form {
+    text-align: center;
+}
+
+.add-form__input {
+    padding: 6px;
+    width: 100%;
+    text-align: center;
+}
+
+.neumo-element {
+    box-shadow: -7px 7px 14px #cccccf, 7px -7px 14px #ffffff;
+    border-radius: 12px;
+}
+
+.neumo-element:hover {
+    background: linear-gradient(45deg, #ffffff, #d8d8db);
+    box-shadow: 10px -10px 20px #929294, -10px 10px 20px #ffffff;
+}
