@@ -18,6 +18,9 @@ integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xb
         <div class="task__priority neumo-element">
             low
         </div>
+        <button class="btn-delete">
+        <i class="fas fa-trash"></i>
+      </button>
     </div>
 </div>
 `
@@ -29,28 +32,56 @@ class TodoItem extends HTMLElement {
             mode: 'open'
         });
 
-        // this.title = this.root.getAttribute('title');
+    }
+
+    getTodoAttributes() {
+        this.id = this.getAttribute('id');
+        this.title = this.getAttribute('title');
+        this.priority = this.getAttribute('priority');
+
+        this.isComplete = this.getAttribute('isComplete') === 'true';
+        console.log((this.isComplete));
     }
 
     connectedCallback() {
-        this.title = this.getAttribute('title');
-        this.isComplete = this.getAttribute('isComplete');
-        this.priority = this.getAttribute('priority');
 
+        this.getTodoAttributes();
         this.root.appendChild(todoItemTemplate.content.cloneNode(true));
+
+        this.deleteButton = this.root.querySelector('.btn-delete');
+
+        this.deleteButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            this.dispatchEvent(new CustomEvent('onDeleteTodo', {
+                detail: {
+                    id: this.id
+                }
+            }));
+        });
 
         this.render();
     }
 
 
     render() {
+        // Title
         const todoItemElementTitle = this.root.querySelector('.task__title');
         todoItemElementTitle.textContent = this.title;
 
+        // Priority
         const todoItemElementPriority = this.root.querySelector('.task__priority');
         todoItemElementPriority.textContent = this.priority;
-        todoItemElementPriority.classList.add(this.priority)
+        todoItemElementPriority.classList.add(this.priority);
 
+        // isComplete
+        const todoItemElementCheck = this.root.querySelector('.check__icon');
+        if (this.isComplete) {
+            console.log(this.isComplete)
+            todoItemElementCheck.classList.remove('hide');
+        } else {
+            todoItemElementCheck.classList.add('hide');
+        }
 
     }
 

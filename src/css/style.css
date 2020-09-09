@@ -1,0 +1,24 @@
+body {
+    background: #f0f0f3;
+}
+
+.container {
+    margin: 0px auto;
+    width: 90%;
+    padding: 10px;
+    max-width: 1366px;
+}
+
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: ' ';
+    clear: both;
+    height: 0;
+}
+
+.hide {
+    display: none;
+}
