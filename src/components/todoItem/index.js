@@ -23,79 +23,82 @@ integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xb
       </button>
     </div>
 </div>
-`
+`;
 class TodoItem extends HTMLElement {
+  constructor() {
+    super();
+    this.root = this.attachShadow({
+      mode: 'open',
+    });
+  }
 
-    constructor() {
-        super();
-        this.root = this.attachShadow({
-            mode: 'open'
-        });
+  getTodoAttributes() {
+    this.id = this.getAttribute('id');
+    this.title = this.getAttribute('title');
+    this.priority = this.getAttribute('priority');
 
-    }
+    this.isComplete = this.getAttribute('isComplete') === 'true';
+  }
 
-    getTodoAttributes() {
-        this.id = this.getAttribute('id');
-        this.title = this.getAttribute('title');
-        this.priority = this.getAttribute('priority');
+  connectedCallback() {
+    this.getTodoAttributes();
+    this.root.appendChild(todoItemTemplate.content.cloneNode(true));
 
-        this.isComplete = this.getAttribute('isComplete') === 'true';
-        console.log((this.isComplete));
-    }
+    this.deleteButton = this.root.querySelector('.btn-delete');
 
-    connectedCallback() {
+    this.deleteButton.addEventListener('click', (e) => {
+      e.preventDefault();
 
-        this.getTodoAttributes();
-        this.root.appendChild(todoItemTemplate.content.cloneNode(true));
+      this.dispatchEvent(
+        new CustomEvent('onDeleteTodo', {
+          detail: {
+            id: this.id,
+          },
+        }),
+      );
+    });
 
-        this.deleteButton = this.root.querySelector('.btn-delete');
+    this.toggleButton = this.root.querySelector('.check');
+    this.toggleButton.addEventListener('click', (e) => {
+      e.preventDefault();
 
-        this.deleteButton.addEventListener('click', (e) => {
-            e.preventDefault();
+      // Toggle for preview
+      this.isComplete = !this.isComplete;
 
-            this.dispatchEvent(new CustomEvent('onDeleteTodo', {
-                detail: {
-                    id: this.id
-                }
-            }));
-        });
+      this.dispatchEvent(
+        new CustomEvent('onToggleTodo', {
+          detail: {
+            id: this.id,
+          },
+        }),
+      );
+      this.render();
+    });
 
-        this.toggleButton = this.root.querySelector('.check');
-        this.toggleButton.addEventListener('click', (e) => {
-            e.preventDefault();
+    this.render();
+  }
 
-            this.dispatchEvent(new CustomEvent('onToggleTodo', {
-                detail: {
-                    id: this.id
-                }
-            }))
-        })
+  disconnectedCallback() {
+    // Remove event Listeners
+  }
 
-        this.render();
-    }
+  render() {
+    // Title
+    const todoItemElementTitle = this.root.querySelector('.task__title');
+    todoItemElementTitle.textContent = this.title;
+    this.isComplete
+      ? todoItemElementTitle.classList.add('complete')
+      : todoItemElementTitle.classList.remove('complete');
 
-    disconnectedCallback() {
-        // Remove event Listeners
-    }
+    // Priority
+    const todoItemElementPriority = this.root.querySelector('.task__priority');
+    todoItemElementPriority.textContent = this.priority;
+    todoItemElementPriority.classList.add(this.priority);
 
-
-    render() {
-        // Title
-        const todoItemElementTitle = this.root.querySelector('.task__title');
-        todoItemElementTitle.textContent = this.title;
-
-        // Priority
-        const todoItemElementPriority = this.root.querySelector('.task__priority');
-        todoItemElementPriority.textContent = this.priority;
-        todoItemElementPriority.classList.add(this.priority);
-
-        // isComplete
-        const todoItemElementCheck = this.root.querySelector('.check__icon');
-        !!this.isComplete ?
-            todoItemElementCheck.classList.remove('hide') :
-            todoItemElementCheck.classList.add('hide');
-    }
-
+    // isComplete
+    const todoItemElementCheck = this.root.querySelector('.check__icon');
+    !!this.isComplete ? todoItemElementCheck.classList.remove('hide') : todoItemElementCheck.classList.add('hide');
+  }
 }
 
 window.customElements.define('todo-item', TodoItem);

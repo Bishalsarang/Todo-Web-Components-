@@ -1,11 +1,26 @@
 .add-form {
     text-align: center;
+    width: 56%;
+    /* padding-left: 30px; */
+    margin: 0px auto;
+    padding-bottom: 10px;
 }
 
 .add-form__input {
     padding: 6px;
     width: 100%;
     text-align: center;
+}
+
+.hide {
+    display: none;
+}
+
+.error {
+    padding: 10px;
+    color: red;
+    text-align: center;
+    font-weight: bolder;
 }
 
 .neumo-element {

@@ -70,6 +70,10 @@
     box-shadow: -8px 8px 16px #bbbbbe, 8px -8px 16px #ffffff;
 }
 
+.complete {
+    text-decoration: line-through;
+}
+
 button {
     border: 0;
     outline: none;
