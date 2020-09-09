@@ -13,12 +13,21 @@ class TodoList extends HTMLElement {
 
         this.todos = [{
                 title: 'hello',
-                isComplete: false
+                priority: 'low',
+                isComplete: false,
             },
             {
                 title: 'Assignment',
-                isComplete: false
-            }
+                priority: 'high',
+                isComplete: false,
+
+            },
+            {
+                title: 'Assignment',
+                priority: 'med',
+                isComplete: false,
+            },
+
         ]
     }
 
@@ -39,8 +48,11 @@ class TodoList extends HTMLElement {
     render() {
         this.todos.innerHTML = '';
         this.todos.forEach((item, index) => {
-            const todoItem = document.createElement('li');
-            todoItem.innerHTML = item.title;
+            const todoItem = document.createElement('todo-item');
+
+            todoItem.setAttribute('title', item.title);
+            todoItem.setAttribute('priority', item.priority);
+
             this.listElement.appendChild(todoItem);
         });
 

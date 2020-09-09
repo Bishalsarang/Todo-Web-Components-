@@ -1,0 +1,74 @@
+.task {
+    margin: 0px auto;
+    margin-bottom: 10px;
+    padding: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task--complete {
+    text-decoration: line-through;
+    background: #dddde4 !important;
+}
+
+.task__title {
+    display: inline-block;
+}
+
+.info {
+    padding-left: 16px;
+}
+
+.task__controls {
+    padding: 12px 16px 0px 12px;
+}
+
+.task__priority {
+    display: inline-block;
+    padding: 0px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.high {
+    color: red;
+}
+
+.med {
+    color: yellowgreen;
+}
+
+.low {
+    color: blue;
+}
+
+.neumo-element {
+    box-shadow: -7px 7px 14px #cccccf, 7px -7px 14px #ffffff;
+    border-radius: 12px;
+}
+
+.neumo-element:hover {
+    background: linear-gradient(45deg, #ffffff, #d8d8db);
+    box-shadow: 10px -10px 20px #929294, -10px 10px 20px #ffffff;
+}
+
+.check {
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    color: red;
+    cursor: pointer;
+    background: linear-gradient(225deg, #d8d8db, #ffffff);
+    box-shadow: -8px 8px 16px #bbbbbe, 8px -8px 16px #ffffff;
+}
+
+button {
+    border: 0;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+}
