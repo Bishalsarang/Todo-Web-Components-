@@ -79,7 +79,6 @@ class TodoItem extends HTMLElement {
     this.togglePriority.addEventListener('click', (e) => {
       e.preventDefault();
 
-      // this.priority = this.priority[this.priority.findIndexOf()];
       this.togglePriority.classList.remove(this.priority);
       this.priority = PRIORITIES[(PRIORITIES.indexOf(this.priority) + 1) % PRIORITIES.length];
 

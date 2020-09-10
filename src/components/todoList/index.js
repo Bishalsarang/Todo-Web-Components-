@@ -18,24 +18,7 @@ class TodoList extends HTMLElement {
     this.drawnKeyId = new Set();
 
     this.todos = [
-      {
-        id: 'todo-1',
-        title: 'hello',
-        priority: 'low',
-        isComplete: true,
-      },
-      {
-        id: 'todo-2',
-        title: 'Assignment',
-        priority: 'high',
-        isComplete: false,
-      },
-      {
-        id: 'todo-3',
-        title: 'Assignmentq',
-        priority: 'med',
-        isComplete: false,
-      },
+
     ];
   }
 
@@ -46,13 +29,32 @@ class TodoList extends HTMLElement {
     const addForm = this.root.querySelector('add-form');
     addForm.addEventListener('onAddTodo', this.addTodo.bind(this));
 
+    // LOad state frm local storage
+    this.getLocalStorage();
     this.render();
   }
 
+
+  getLocalStorage() {
+    const savedState = JSON.parse(localStorage.getItem('todos'));
+    if (savedState) {
+      this.todos = savedState;
+    }
+
+  }
+
+  updateLocalStorage() {
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
+
   addTodo(e) {
-    const { body: newToDo } = e.detail;
+    const {
+      body: newToDo
+    } = e.detail;
 
     this.todos = [...this.todos, newToDo];
+    this.updateLocalStorage();
+
     this.render();
   }
 
@@ -64,7 +66,7 @@ class TodoList extends HTMLElement {
     const id = e.detail.id;
 
     this.todos = this.todos.filter((item) => item.id !== id);
-
+    this.updateLocalStorage();
     this.render();
   }
 
@@ -86,6 +88,7 @@ class TodoList extends HTMLElement {
 
       return item;
     });
+    this.updateLocalStorage();
   }
 
   togglePriority(e) {
@@ -102,7 +105,9 @@ class TodoList extends HTMLElement {
 
       return item;
     });
+    this.updateLocalStorage();
   }
+
   /**
    * Set Attributes fot todo-item web component element
    * @param {Object} todoItem  HTML element
