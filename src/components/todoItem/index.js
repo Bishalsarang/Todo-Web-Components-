@@ -96,16 +96,16 @@ class TodoItem extends HTMLElement {
   }
 
   disconnectedCallback() {
-    // Remove event Listeners
+
   }
 
   render() {
     // Title
     const todoItemElementTitle = this.root.querySelector('.task__title');
     todoItemElementTitle.textContent = this.title;
-    this.isComplete
-      ? todoItemElementTitle.classList.add('complete')
-      : todoItemElementTitle.classList.remove('complete');
+    this.isComplete ?
+      todoItemElementTitle.classList.add('complete') :
+      todoItemElementTitle.classList.remove('complete');
 
     // Priority
     const todoItemElementPriority = this.root.querySelector('.task__priority');

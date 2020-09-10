@@ -55,7 +55,7 @@ class TodoList extends HTMLElement {
     this.todos = [...this.todos, newToDo];
     this.updateLocalStorage();
 
-    this.render();
+    this.renderAdd(newToDo.id);
   }
 
   /**
@@ -67,7 +67,7 @@ class TodoList extends HTMLElement {
 
     this.todos = this.todos.filter((item) => item.id !== id);
     this.updateLocalStorage();
-    this.render();
+    this.renderDelete(id);
   }
 
   /**
@@ -114,7 +114,6 @@ class TodoList extends HTMLElement {
    * @param {Object} item Todo Item with key id, title, isComplete and priority
    */
   setItemAttributes(todoItem, item) {
-    console.log(typeof todoItem);
 
     todoItem.setAttribute('id', item.id);
     todoItem.setAttribute('title', item.title);
@@ -122,25 +121,36 @@ class TodoList extends HTMLElement {
     todoItem.setAttribute('isComplete', item.isComplete);
   }
 
+  renderAdd(id) {
+    const item = this.todos.filter(it => it.id == id)[0];
+    this.createTodoElement(item);
+  }
+
+  renderDelete(id) {
+    const elem = this.root.querySelector('todo-item' + '#' + id);
+    elem.parentNode.removeChild(elem);
+  }
+
+  createTodoElement(item) {
+    const todoItem = document.createElement('todo-item');
+    this.setItemAttributes(todoItem, item);
+    // Register custom onDeleteTodo event listener which we are going to dispatch from todo item
+    todoItem.addEventListener('onDeleteTodo', this.deleteTodo.bind(this));
+
+    // Register custom onToggleTodo event listener which we are going to dispatch from todo item
+    todoItem.addEventListener('onToggleTodo', this.toggleTodo.bind(this));
+
+    // Register custom onToggleTodoPriority event listener which we are going to dispatch from todo item
+    todoItem.addEventListener('onToggleTodoPriority', this.togglePriority.bind(this));
+
+    this.listElement.appendChild(todoItem);
+  }
+
   render() {
     if (!this.listElement) return;
-    this.listElement.innerHTML = '';
 
     this.todos.forEach((item) => {
-      const todoItem = document.createElement('todo-item');
-
-      this.setItemAttributes(todoItem, item);
-
-      // Register custom onDeleteTodo event listener which we are going to dispatch from todo item
-      todoItem.addEventListener('onDeleteTodo', this.deleteTodo.bind(this));
-
-      // Register custom onToggleTodo event listener which we are going to dispatch from todo item
-      todoItem.addEventListener('onToggleTodo', this.toggleTodo.bind(this));
-
-      // Register custom onToggleTodoPriority event listener which we are going to dispatch from todo item
-      todoItem.addEventListener('onToggleTodoPriority', this.togglePriority.bind(this));
-
-      this.listElement.appendChild(todoItem);
+      this.createTodoElement(item);
     });
   }
 }
