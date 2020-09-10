@@ -62,8 +62,8 @@ class TodoList extends HTMLElement {
 
     this.todos = [...this.todos, newToDo];
     this.updateLocalStorage();
-
-    this.renderAdd(newToDo.id);
+    this.render();
+   
   }
 
   /**
@@ -131,11 +131,6 @@ class TodoList extends HTMLElement {
     todoItem.setAttribute('isComplete', item.isComplete);
   }
 
-  renderAdd(id) {
-    const item = this.todos.filter((it) => it.id === id)[0];
-
-    this.createTodoElement(item);
-  }
 
   renderDelete(id) {
     const elem = this.root.querySelector('todo-item' + '#' + id);
