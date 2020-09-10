@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 const addFormTemplate = document.createElement('template');
 
 addFormTemplate.innerHTML = `
@@ -22,6 +23,7 @@ class AddForm extends HTMLElement {
 
   connectedCallback() {
     const that = this;
+
     this.root.appendChild(addFormTemplate.content.cloneNode(true));
 
     this.addFormElement = this.root.querySelector('.add-form');
@@ -35,6 +37,7 @@ class AddForm extends HTMLElement {
 
       if (!that.isValidTitle()) {
         that.error.classList.remove('hide');
+        
         return;
       }
 

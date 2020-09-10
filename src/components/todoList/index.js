@@ -1,17 +1,16 @@
-/* eslint-disable require-jsdoc */
-import {
-  html,
-  render
-} from '../../../node_modules/lit-html';
+import { html, render } from '../../../node_modules/lit-html';
+import { repeat } from '../../../node_modules/lit-html/directives/repeat.js';
 
-import {repeat} from '../../../node_modules/lit-html/directives/repeat.js';
+import { PRIORITIES } from '../../constants/index.js';
 
-
-import {
-  PRIORITIES
-} from '../../constants/index.js';
-
+/**
+ * Class todoList.
+ * Custom web component ToDoList.
+ */
 class TodoList extends HTMLElement {
+  /**
+   * Constructor.
+   */
   constructor() {
     super();
 
@@ -26,8 +25,6 @@ class TodoList extends HTMLElement {
    * Runs when component is added.
    */
   connectedCallback() {
-    
-
     // Load state from local storage
     this.getLocalStorage();
     this.render();
@@ -57,21 +54,39 @@ class TodoList extends HTMLElement {
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 
-  listTemplate(){
-    return (
-      html `
-  <add-form></add-form>
-  
-  <ul class='todo-list'>
-    ${repeat(this.todos, (todo) => todo.id, ({id, title, isComplete, priority}) =>  html`<todo-item id=${id} title=${title} isComplete=${isComplete} priority=${priority}  @onDeleteTodo=${this.deleteTodo.bind(this)}  @onToggleTodo=${this.toggleTodo.bind(this)} @onToggleTodoPriority=${this.togglePriority.bind(this)}></todo-item>`)}
-    </ul>
-  `)
+  /**
+   * 
+   */
+  todoListTemplate() {
+    return html`
+      <add-form></add-form>
+
+      <ul class="todo-list">
+        ${repeat(
+          this.todos,
+          (todo) => todo.id, // key
+          ({ id, title, isComplete, priority }) =>
+            html`<todo-item
+              id=${id}
+              title=${title}
+              priority=${priority}
+              isComplete=${isComplete}
+              @onDeleteTodo=${this.deleteTodo.bind(this)}
+              @onToggleTodo=${this.toggleTodo.bind(this)}
+              @onToggleTodoPriority=${this.togglePriority.bind(this)}
+            ></todo-item>`,
+        )}
+      </ul>
+    `;
   }
 
+  /**
+   * Add new todo.
+   * 
+   * @param {Object} e  Event Object.
+   */
   addTodo(e) {
-    const {
-      body: newToDo
-    } = e.detail;
+    const { body: newToDo } = e.detail;
 
     this.todos = [...this.todos, newToDo];
 
@@ -80,9 +95,9 @@ class TodoList extends HTMLElement {
   }
 
   /**
-   * Receive id in custom event object and return new todo list after removing the id. 
-   * 
-   * @param {Object} e Event Object
+   * Receive id in custom event object and return new todo list after removing the id.
+   *
+   * @param {Object} e Event Object.
    */
   deleteTodo(e) {
     const id = e.detail.id;
@@ -94,22 +109,22 @@ class TodoList extends HTMLElement {
   }
 
   /**
-   * Receive id in custom event object and return new todo list after toggling the complete status of id
-   * @param {Object} e Event Object
+   * Receive id in custom event object and return new todo list after toggling the complete status of id.
+   * 
+   * @param {Object} e Event Object.
    */
   toggleTodo(e) {
     const id = e.detail.id;
-    
+
     this.todos = this.todos.map((item) => {
       // Toggle Complete state
       if (item.id === id) {
-       
         return {
           ...item,
           isComplete: !item.isComplete,
         };
       }
-     
+
       return item;
     });
 
@@ -117,6 +132,11 @@ class TodoList extends HTMLElement {
     this.render();
   }
 
+  /**
+   * Toggle Priority for todo item.
+   * 
+   * @param {Object} e EVent Object.
+   */
   togglePriority(e) {
     const id = e.detail.id;
 
@@ -134,9 +154,11 @@ class TodoList extends HTMLElement {
     this.updateLocalStorage();
   }
 
+  /**
+   * Render lit-html template.
+   */
   render() {
-    render(this.listTemplate(),this.root);
- 
+    render(this.todoListTemplate(), this.root);
   }
 }
 
