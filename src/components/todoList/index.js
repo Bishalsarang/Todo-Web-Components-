@@ -19,8 +19,10 @@ class TodoList extends HTMLElement {
     this.todos = [];
   }
 
+  /**
+   * Runs when component is added.
+   */
   connectedCallback() {
-  
     this.listTemplate = (todoList) => {
       return (
         html `
@@ -43,6 +45,9 @@ class TodoList extends HTMLElement {
     addForm.addEventListener('onAddTodo', this.addTodo.bind(this));
   }
 
+  /**
+   * Get saved state from localStorage.
+   */
   getLocalStorage() {
     const savedState = JSON.parse(localStorage.getItem('todos'));
 
@@ -51,6 +56,9 @@ class TodoList extends HTMLElement {
     }
   }
 
+  /**
+   * Update content of localStorage.
+   */
   updateLocalStorage() {
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
@@ -61,9 +69,9 @@ class TodoList extends HTMLElement {
     } = e.detail;
 
     this.todos = [...this.todos, newToDo];
+
     this.updateLocalStorage();
     this.render();
-   
   }
 
   /**
@@ -72,10 +80,10 @@ class TodoList extends HTMLElement {
    */
   deleteTodo(e) {
     const id = e.detail.id;
-
+console.log("before",this.todos)
     this.todos = this.todos.filter((item) => item.id !== id);
+console.log("aftwr",this.todos)
     this.updateLocalStorage();
-    
     this.render();
   }
 
@@ -85,20 +93,22 @@ class TodoList extends HTMLElement {
    */
   toggleTodo(e) {
     const id = e.detail.id;
-
+    
     this.todos = this.todos.map((item) => {
       // Toggle Complete state
       if (item.id === id) {
+       
         return {
           ...item,
           isComplete: !item.isComplete,
         };
       }
-
+     
       return item;
     });
 
     this.updateLocalStorage();
+    this.render();
   }
 
   togglePriority(e) {
@@ -119,7 +129,8 @@ class TodoList extends HTMLElement {
   }
 
   render() {
-    render(this.listTemplate(this.todos),this.root);
+    console.log(this.todos)
+    render(this.listTemplate(this.todos),this.root, {eventContext: this});
  
   }
 }
