@@ -82,13 +82,16 @@ class TodoItem extends HTMLElement {
 
     return html`
       <link rel="stylesheet" href="./components/todoItem/style.css" />
+
       <link
         rel="stylesheet"
         href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
         integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
         crossorigin="anonymous"
       />
+
       <div class=${'task neumo-element ' + (this.isComplete ? 'task--complete' : '')}>
+      
         <div class="info">
           <div class="check" @click=${this.handleToggleComplete()}>
             <div class=${'check__icon ' + (this.isComplete ? '' : 'hide')}>
