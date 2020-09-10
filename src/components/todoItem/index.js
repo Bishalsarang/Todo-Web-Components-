@@ -1,3 +1,7 @@
+import {
+  PRIORITIES
+} from '../../constants/index';
+
 const todoItemTemplate = document.createElement('template');
 
 todoItemTemplate.innerHTML = `
