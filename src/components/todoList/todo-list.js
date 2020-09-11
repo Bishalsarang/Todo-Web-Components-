@@ -1,8 +1,5 @@
-
 import {LitElement, html} from '@polymer/lit-element';
 import { repeat } from '../../../node_modules/lit-html/directives/repeat.js';
-
-import { PRIORITIES } from '../../constants/index.js';
 
 /**
  * Class todoList.
@@ -14,9 +11,6 @@ class TodoList extends LitElement {
    */
   constructor() {
     super();
-
-    this.todos = [];
-    this.getLocalStorage();
   }
 
   /**
@@ -28,100 +22,11 @@ class TodoList extends LitElement {
     };
   }
 
-  /**
-   * Trigger when properties changes.
-   * 
-   */
-  updated() {
-    this.updateLocalStorage();
-  }
-
-  /**
-   * Get saved state from localStorage.
-   */
-  getLocalStorage() {
-    const savedState = JSON.parse(localStorage.getItem('todos'));
-
-    if (savedState) {
-      this.todos = savedState;
-    }
-  }
-
-  /**
-   * Update content of localStorage.
-   */
-  updateLocalStorage() {
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-  }
-
-
-  /**
-   * Add new todo.
-   * 
-   * @param {Object} data  TodoItem Data.
-   */
-  addTodo(data) {
-
-    this.todos = [...this.todos, data];
-  }
-
-  /**
-   * Receive id  and return new todo list after removing the id.
-   *
-   * @param {String} id TodoItem id.
-   */
-  deleteTodo(id) {
-
-    this.todos = this.todos.filter((item) => item.id !== id);
-  }
-
-  /**
-   * Receive id in custom event object and return new todo list after toggling the complete status of id.
-   * 
-   * @param {Object} id TodoItem id.
-   */
-  toggleTodo(id) {
-
-    this.todos = this.todos.map((item) => {
-
-      if (item.id === id) {
-        return {
-          ...item,
-          isComplete: !item.isComplete,
-        };
-      }
-
-      return item;
-    });
-  }
-
-  /**
-   * Toggle Priority for todo item.
-   * 
-   * @param {Object} id TodoItem id.
-   */
-  togglePriority(id) {
-
-    this.todos = this.todos.map((item) => {
-
-      if (item.id === id) {
-        return {
-          ...item,
-          priority: PRIORITIES[(PRIORITIES.indexOf(item.priority) + 1) % PRIORITIES.length],
-        };
-      }
-
-      return item;
-    });
-  }
-
     /**
    * @returns Lit-html template.
    */
   todoListTemplate() {
     return html`
-      <add-form .onAddTodo=${this.addTodo.bind(this)}></add-form>
-
       <ul class="todo-list">
         ${repeat(
           this.todos,
@@ -133,9 +38,9 @@ class TodoList extends LitElement {
                 .title=${title}
                 .priority=${priority}
                 .isComplete=${isComplete}
-                .onDeleteTodo=${this.deleteTodo.bind(this)}
-                .onToggleTodo=${this.toggleTodo.bind(this)}
-                .onToggleTodoPriority=${this.togglePriority.bind(this)}
+                .onDeleteTodo=${this.onDeleteTodo}
+                .onToggleTodo=${this.onToggleTodo}
+                .onToggleTodoPriority=${this.onToggleTodoPriority}
               >
               </todo-item>
             `,
