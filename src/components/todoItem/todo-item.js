@@ -1,9 +1,15 @@
-/* eslint-disable require-jsdoc */
 import { html, render } from '../../../node_modules/lit-html';
 
 import { PRIORITIES } from '../../constants/index';
 
+/**
+ * TodoItem.
+ * 
+ */
 class TodoItem extends HTMLElement {
+  /**
+   * 
+   */
   constructor() {
 
     super();
@@ -13,10 +19,16 @@ class TodoItem extends HTMLElement {
     
   }
 
+  /**
+   * 
+   */
   connectedCallback() {
     this.render();
   }
 
+  /**
+   * Handle priority toggle.
+   */
   handleTogglePriority() {
     return (e) => {
       e.preventDefault();
@@ -35,6 +47,9 @@ class TodoItem extends HTMLElement {
     };
   }
 
+  /**
+   * Handle delete.
+   */
   handleDelete() {
     return (e) => {
       e.preventDefault();
@@ -50,6 +65,9 @@ class TodoItem extends HTMLElement {
     };
   }
 
+  /**
+   * Handle toggle complete.
+   */
   handleToggleComplete() {
     return (e) => {
       e.preventDefault();
@@ -67,6 +85,10 @@ class TodoItem extends HTMLElement {
     };
   }
 
+  /**
+   * 
+   * @returns lit-html template.
+   */
   todoItemTemplate(){
 
     return html`
@@ -104,6 +126,9 @@ class TodoItem extends HTMLElement {
     `;
   }
 
+  /**
+   * Render lit-html template.
+   */
   render() {
     render(this.todoItemTemplate(), this.root);
   }

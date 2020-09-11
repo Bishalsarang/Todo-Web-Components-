@@ -55,7 +55,7 @@ class TodoList extends HTMLElement {
   }
 
   /**
-   * 
+   * @returns lit-html template
    */
   todoListTemplate() {
     return html`

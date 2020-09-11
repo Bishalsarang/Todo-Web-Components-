@@ -1,9 +1,12 @@
-/* eslint-disable require-jsdoc */
-
 import { html, render } from '../../../node_modules/lit-html';
 
-
+/**
+ * AddForm.
+ */
 class AddForm extends HTMLElement {
+  /**
+   * 
+   */
   constructor() {
     super();
 
@@ -12,6 +15,9 @@ class AddForm extends HTMLElement {
     });
   }
 
+  /**
+   * Runs when element is created.
+   */
   connectedCallback() {
 
     this.render();
@@ -22,6 +28,9 @@ class AddForm extends HTMLElement {
     this.error.classList.add('hide');
   }
 
+  /**
+   * Handle when submit button is clicked.
+   */
   handleSubmit() {
     return (e) => {
       e.preventDefault();
@@ -49,10 +58,17 @@ class AddForm extends HTMLElement {
     };
   }
 
+  /**
+   * 
+   * @returns True if title is valid.
+   */
   isValidTitle() {
     return this.newTodoElementTitle.value.length >= 3;
   }
 
+  /**
+   * lit-html template for add-form
+   */
   addFormTemplate(){
 
     return html`
@@ -67,6 +83,9 @@ class AddForm extends HTMLElement {
     `;
   }
 
+  /**
+   * Renders lit-html template.
+   */
   render(){
     render(this.addFormTemplate(), this.root);
   }
