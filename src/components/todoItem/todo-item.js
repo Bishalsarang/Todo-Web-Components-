@@ -1,4 +1,4 @@
-import { html, render } from '../../../node_modules/lit-html';
+import {LitElement, html} from '@polymer/lit-element';
 
 import { PRIORITIES } from '../../constants/index';
 
@@ -6,24 +6,25 @@ import { PRIORITIES } from '../../constants/index';
  * TodoItem.
  * 
  */
-class TodoItem extends HTMLElement {
+class TodoItem extends LitElement {
   /**
-   * 
+   * Constructor .
    */
   constructor() {
-
     super();
-    this.root = this.attachShadow({
-      mode: 'open',
-    });
-    
   }
 
   /**
-   * 
+   * Re-renders when these property changes.
    */
-  connectedCallback() {
-    this.render();
+  static get properties() {
+
+    return {
+      id: { type: String },
+      title: {type: String},
+      priority: {type: String},
+      isComplete: {type: String}
+    };
   }
 
   /**
@@ -34,16 +35,7 @@ class TodoItem extends HTMLElement {
       e.preventDefault();
 
       this.priority = PRIORITIES[(PRIORITIES.indexOf(this.priority) + 1) % PRIORITIES.length];
-
-      this.dispatchEvent(
-        new CustomEvent('onToggleTodoPriority', {
-          detail: {
-            id: this.id,
-          },
-        }),
-      );
-
-      this.render();
+      this.onToggleTodoPriority(this.id);
     };
   }
 
@@ -53,15 +45,8 @@ class TodoItem extends HTMLElement {
   handleDelete() {
     return (e) => {
       e.preventDefault();
-      this.dispatchEvent(
-        new CustomEvent('onDeleteTodo', {
-          detail: {
-            id: this.id,
-          },
-        }),
-      );
-
-      this.render();
+      
+      this.onDeleteTodo(this.id);
     };
   }
 
@@ -71,23 +56,14 @@ class TodoItem extends HTMLElement {
   handleToggleComplete() {
     return (e) => {
       e.preventDefault();
-      this.isComplete = !this.isComplete;
 
-      this.dispatchEvent(
-        new CustomEvent('onToggleTodo', {
-          detail: {
-            id: this.id,
-          },
-        }),
-      );
-
-      this.render();
+      this.onToggleTodo(this.id);
     };
   }
 
   /**
    * 
-   * @returns lit-html template.
+   * @returns Lit-html template.
    */
   todoItemTemplate(){
 
@@ -130,7 +106,8 @@ class TodoItem extends HTMLElement {
    * Render lit-html template.
    */
   render() {
-    render(this.todoItemTemplate(), this.root);
+
+    return this.todoItemTemplate();
   }
 }
 

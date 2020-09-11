@@ -1,50 +1,27 @@
-// import { html, render } from '../../../node_modules/lit-html';
-import {LitElement, html, css} from '@polymer/lit-element';
+
+import {LitElement, html} from '@polymer/lit-element';
+
 /**
  * AddForm.
  */
 class AddForm extends LitElement {
   /**
-   * 
+   * Constructor.
    */
   constructor() {
     super();
     this.hasError = false;
-  }
-
-
-
-  
+  }  
 
   /**
-   * Runs when element is created.
+   * 
    */
-  connectedCallback() {
-    super.connectedCallback()
-console.log(this.shadowRoot.querySelector('.add-from__input'))
-
-    // this.render();
-
-    this.newTodoElementTitle = this.shadowRoot.querySelector('.add-form__input');
-
-    // this.error = this.root.querySelector('.error');
-    // this.error.classList.add('hide');
-  }
-
-  firstUpdated(){
-    console.log("hi" + this.renderRoot.querySelector('.add-from__input'));
-    this.requestUpdate();
-
-
-
-    
-  }
-
   static get properties() {
     return {
       hasError: { type: Boolean },
     };
   }
+
   /**
    * Handle when submit button is clicked.
    */
@@ -52,28 +29,14 @@ console.log(this.shadowRoot.querySelector('.add-from__input'))
     
     return (e) => {
       this.newTodoElementTitle = this.shadowRoot.querySelector('.add-form__input');
-      console.log(this.shadowRoot.querySelector('.add-form__input').value)
+
       e.preventDefault();
 
       if (!this.isValidTitle()) {
-        // this.error.classList.remove('hide');
         this.hasError = true;
 
         return;
       }
-
-      console.log("here")
-      // this.dispatchEvent(
-      //   new CustomEvent('onAddTodo', {
-      //     detail: {
-      //       body: {
-      //         id: 'todo-' + Date.now().toString(),
-      //         title: this.newTodoElementTitle.value,
-      //         isComplete: false,
-      //         priority: 'low',
-      //       },
-      //     },
-      //   }));
 
       this.onAddTodo({
         id: 'todo-' + Date.now().toString(),
@@ -81,8 +44,9 @@ console.log(this.shadowRoot.querySelector('.add-from__input'))
         isComplete: false,
         priority: 'low',
       });
-      this.newTodoElementTitle.value = '';
+
       this.hasError = false;
+      this.newTodoElementTitle.value = '';
     };
   }
 
@@ -96,7 +60,7 @@ console.log(this.shadowRoot.querySelector('.add-from__input'))
 
 
   /**
-   * lit-html template for add-form
+   * Lit-html template for add-form.
    */
   addFormTemplate(){
 
@@ -116,7 +80,7 @@ console.log(this.shadowRoot.querySelector('.add-from__input'))
    * Renders lit-html template.
    */
   render(){
-    // render(this.addFormTemplate(), this.root);
+
     return this.addFormTemplate();
   }
 

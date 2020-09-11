@@ -1,7 +1,6 @@
-// import { html, render } from '../../../node_modules/lit-html';
-import { repeat } from '../../../node_modules/lit-html/directives/repeat.js';
 
-import {LitElement, html, css} from '@polymer/lit-element';
+import {LitElement, html} from '@polymer/lit-element';
+import { repeat } from '../../../node_modules/lit-html/directives/repeat.js';
 
 import { PRIORITIES } from '../../constants/index.js';
 
@@ -21,7 +20,7 @@ class TodoList extends LitElement {
   }
 
   /**
-   * 
+   * Re-renders when todos property change.
    */
   static get properties() {
     return {
@@ -35,13 +34,6 @@ class TodoList extends LitElement {
    */
   updated() {
     this.updateLocalStorage();
-  }
-
-  /**
-   * Runs when component is added.
-   */
-  connectedCallback() {
-    super.connectedCallback();
   }
 
   /**
@@ -69,16 +61,16 @@ class TodoList extends LitElement {
    * @param {Object} data  TodoItem Data.
    */
   addTodo(data) {
+
     this.todos = [...this.todos, data];
   }
 
   /**
-   * Receive id in custom event object and return new todo list after removing the id.
+   * Receive id  and return new todo list after removing the id.
    *
-   * @param {Object} e Event Object.
+   * @param {String} id TodoItem id.
    */
-  deleteTodo(e) {
-    const id = e.detail.id;
+  deleteTodo(id) {
 
     this.todos = this.todos.filter((item) => item.id !== id);
   }
@@ -86,13 +78,12 @@ class TodoList extends LitElement {
   /**
    * Receive id in custom event object and return new todo list after toggling the complete status of id.
    * 
-   * @param {Object} e Event Object.
+   * @param {Object} id TodoItem id.
    */
-  toggleTodo(e) {
-    const id = e.detail.id;
+  toggleTodo(id) {
 
     this.todos = this.todos.map((item) => {
-      // Toggle Complete state
+
       if (item.id === id) {
         return {
           ...item,
@@ -102,21 +93,17 @@ class TodoList extends LitElement {
 
       return item;
     });
-
-    this.updateLocalStorage();
-    this.render();
   }
 
   /**
    * Toggle Priority for todo item.
    * 
-   * @param {Object} e EVent Object.
+   * @param {Object} id TodoItem id.
    */
-  togglePriority(e) {
-    const id = e.detail.id;
+  togglePriority(id) {
 
     this.todos = this.todos.map((item) => {
-      // Toggle Priority state
+
       if (item.id === id) {
         return {
           ...item,
@@ -126,11 +113,10 @@ class TodoList extends LitElement {
 
       return item;
     });
-    this.updateLocalStorage();
   }
 
     /**
-   * @returns lit-html template
+   * @returns Lit-html template.
    */
   todoListTemplate() {
     return html`
@@ -141,15 +127,18 @@ class TodoList extends LitElement {
           this.todos,
           (todo) => todo.id, // key
           ({ id, title, isComplete, priority }) =>
-            html`<todo-item
-              .id=${id}
-              .title=${title}
-              .priority=${priority}
-              .isComplete=${isComplete}
-              @onDeleteTodo=${this.deleteTodo.bind(this)}
-              @onToggleTodo=${this.toggleTodo.bind(this)}
-              @onToggleTodoPriority=${this.togglePriority.bind(this)}
-            ></todo-item>`,
+            html`
+              <todo-item
+                .id=${id}
+                .title=${title}
+                .priority=${priority}
+                .isComplete=${isComplete}
+                .onDeleteTodo=${this.deleteTodo.bind(this)}
+                .onToggleTodo=${this.toggleTodo.bind(this)}
+                .onToggleTodoPriority=${this.togglePriority.bind(this)}
+              >
+              </todo-item>
+            `,
         )}
       </ul>
     `;
