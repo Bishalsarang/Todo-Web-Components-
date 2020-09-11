@@ -72,7 +72,7 @@ class AddForm extends HTMLElement {
   addFormTemplate(){
 
     return html`
-      <link rel="stylesheet" href="./components/addForm/style.css" />
+      <link rel="stylesheet" href="./src/components/addForm/style.css" />
 
       <div class="error hide">Error: Title should be at least 3 characters</div>
 

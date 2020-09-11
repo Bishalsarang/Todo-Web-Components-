@@ -92,7 +92,7 @@ class TodoItem extends HTMLElement {
   todoItemTemplate(){
 
     return html`
-      <link rel="stylesheet" href="./components/todoItem/style.css" />
+      <link rel="stylesheet" href="./src/components/todoItem/style.css" />
 
       <link
         rel="stylesheet"
