@@ -2,19 +2,6 @@
 
 import { html, render } from '../../../node_modules/lit-html';
 
-const addFormTemplate = document.createElement('template');
-
-addFormTemplate.innerHTML = `
-                            <link rel="stylesheet" href="./components/addForm/style.css">
-                            <div class="error hide">Error: Title should be at least 3 characters</div>
-                            <form class="add-form">
-                                <input
-                                    type="text"
-                                    placeholder="Add Todo"
-                                    class="add-form__input neumo-element"
-                                />
-                                <input class="neumo-element hide" type="submit" value="submit" />
-                            </form>`;
 
 class AddForm extends HTMLElement {
   constructor() {
