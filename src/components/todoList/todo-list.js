@@ -24,20 +24,21 @@ class TodoList extends LitElement {
     this.getLocalStorage();
   }
 
+  static get properties() {
+    return {
+      todos: { type: Array },
+    };
+  }
   /**
    * Runs when component is added.
    */
-  // connectedCallback() {
-  //   // Load state from local storage
-  //   // this.getLocalStorage();
-  //   // this.render();
-
-  //   // this.listElement = this.root.querySelector('.todo-list');
-
-  //   // const addForm = this.root.querySelector('add-form');
-
-  //   // addForm.addEventListener('onAddTodo', this.addTodo.bind(this));
-  // }
+  connectedCallback() {
+    // Load state from local storage
+    // this.getLocalStorage();
+    // this.render();
+    super.connectedCallback();
+    // this.listElement = this.root.querySelector('.todo-list');
+  }
 
   /**
    * Get saved state from localStorage.
@@ -62,7 +63,8 @@ class TodoList extends LitElement {
    */
   todoListTemplate() {
     return html`
-      <add-form></add-form>
+      <add-form  @onAddTodo=${this.addTodo.bind(this)}
+              ></add-form>
 
       <ul class="todo-list">
         ${repeat(
@@ -93,8 +95,9 @@ class TodoList extends LitElement {
 
     this.todos = [...this.todos, newToDo];
 
+    console.log("here add")
     this.updateLocalStorage();
-    this.render();
+   
   }
 
   /**
@@ -161,7 +164,7 @@ class TodoList extends LitElement {
    * Render lit-html template.
    */
   render() {
-    console.log("here")
+    console.log("rerender")
     // render(this.todoListTemplate(), this.root);
     return this.todoListTemplate();
     return html`<h1>Hello</h1>`

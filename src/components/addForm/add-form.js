@@ -1,46 +1,68 @@
-import { html, render } from '../../../node_modules/lit-html';
-
+// import { html, render } from '../../../node_modules/lit-html';
+import {LitElement, html, css} from '@polymer/lit-element';
 /**
  * AddForm.
  */
-class AddForm extends HTMLElement {
+class AddForm extends LitElement {
   /**
    * 
    */
   constructor() {
     super();
-
-    this.root = this.attachShadow({
-      mode: 'open',
-    });
+    this.hasError = false;
   }
+
+
+
+  
 
   /**
    * Runs when element is created.
    */
   connectedCallback() {
+    super.connectedCallback()
+console.log(this.shadowRoot.querySelector('.add-from__input'))
 
-    this.render();
+    // this.render();
 
-    this.newTodoElementTitle = this.root.querySelector('.add-form__input');
+    this.newTodoElementTitle = this.shadowRoot.querySelector('.add-form__input');
 
-    this.error = this.root.querySelector('.error');
-    this.error.classList.add('hide');
+    // this.error = this.root.querySelector('.error');
+    // this.error.classList.add('hide');
   }
 
+  firstUpdated(){
+    console.log("hi" + this.renderRoot.querySelector('.add-from__input'));
+    this.requestUpdate();
+
+
+
+    
+  }
+
+  static get properties() {
+    return {
+      hasError: { type: Boolean },
+    };
+  }
   /**
    * Handle when submit button is clicked.
    */
   handleSubmit() {
+    
     return (e) => {
+      this.newTodoElementTitle = this.shadowRoot.querySelector('.add-form__input');
+      console.log(this.shadowRoot.querySelector('.add-form__input').value)
       e.preventDefault();
 
       if (!this.isValidTitle()) {
-        this.error.classList.remove('hide');
+        // this.error.classList.remove('hide');
+        this.hasError = true;
 
         return;
       }
 
+      console.log("here")
       this.dispatchEvent(
         new CustomEvent('onAddTodo', {
           detail: {
@@ -54,7 +76,7 @@ class AddForm extends HTMLElement {
         }));
 
       this.newTodoElementTitle.value = '';
-      this.error.classList.add('hide');
+      this.hasError = false;
     };
   }
 
@@ -66,6 +88,7 @@ class AddForm extends HTMLElement {
     return this.newTodoElementTitle.value.length >= 3;
   }
 
+
   /**
    * lit-html template for add-form
    */
@@ -74,10 +97,10 @@ class AddForm extends HTMLElement {
     return html`
       <link rel="stylesheet" href="./src/components/addForm/style.css" />
 
-      <div class="error hide">Error: Title should be at least 3 characters</div>
+      <div class=${"error " +  (this.hasError ? '': 'hide')}>Error: Title should be at least 3 characters</div>
 
       <form class="add-form" @submit=${this.handleSubmit()}>
-        <input type="text" placeholder="Add Todo" class="add-form__input neumo-element" />
+        <input type="text" placeholder="Add Todo" class="add-form__input neumo-element" id="add-form__input"/>
         <input class="neumo-element hide" type="submit" value="submit" />
       </form>
     `;
@@ -87,7 +110,8 @@ class AddForm extends HTMLElement {
    * Renders lit-html template.
    */
   render(){
-    render(this.addFormTemplate(), this.root);
+    // render(this.addFormTemplate(), this.root);
+    return this.addFormTemplate();
   }
 
 }
