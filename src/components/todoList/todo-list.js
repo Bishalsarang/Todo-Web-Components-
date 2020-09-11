@@ -16,28 +16,32 @@ class TodoList extends LitElement {
   constructor() {
     super();
 
-    // this.root = this.attachShadow({
-    //   mode: 'open',
-    // });
-
     this.todos = [];
     this.getLocalStorage();
   }
 
+  /**
+   * 
+   */
   static get properties() {
     return {
       todos: { type: Array },
     };
   }
+
+  /**
+   * Trigger when properties changes.
+   * 
+   */
+  updated() {
+    this.updateLocalStorage();
+  }
+
   /**
    * Runs when component is added.
    */
   connectedCallback() {
-    // Load state from local storage
-    // this.getLocalStorage();
-    // this.render();
     super.connectedCallback();
-    // this.listElement = this.root.querySelector('.todo-list');
   }
 
   /**
@@ -58,46 +62,14 @@ class TodoList extends LitElement {
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 
-  /**
-   * @returns lit-html template
-   */
-  todoListTemplate() {
-    return html`
-      <add-form  @onAddTodo=${this.addTodo.bind(this)}
-              ></add-form>
-
-      <ul class="todo-list">
-        ${repeat(
-          this.todos,
-          (todo) => todo.id, // key
-          ({ id, title, isComplete, priority }) =>
-            html`<todo-item
-              .id=${id}
-              .title=${title}
-              .priority=${priority}
-              .isComplete=${isComplete}
-              @onDeleteTodo=${this.deleteTodo.bind(this)}
-              @onToggleTodo=${this.toggleTodo.bind(this)}
-              @onToggleTodoPriority=${this.togglePriority.bind(this)}
-            ></todo-item>`,
-        )}
-      </ul>
-    `;
-  }
 
   /**
    * Add new todo.
    * 
-   * @param {Object} e  Event Object.
+   * @param {Object} data  TodoItem Data.
    */
-  addTodo(e) {
-    const { body: newToDo } = e.detail;
-
-    this.todos = [...this.todos, newToDo];
-
-    console.log("here add")
-    this.updateLocalStorage();
-   
+  addTodo(data) {
+    this.todos = [...this.todos, data];
   }
 
   /**
@@ -109,9 +81,6 @@ class TodoList extends LitElement {
     const id = e.detail.id;
 
     this.todos = this.todos.filter((item) => item.id !== id);
-
-    this.updateLocalStorage();
-    this.render();
   }
 
   /**
@@ -160,14 +129,39 @@ class TodoList extends LitElement {
     this.updateLocalStorage();
   }
 
+    /**
+   * @returns lit-html template
+   */
+  todoListTemplate() {
+    return html`
+      <add-form .onAddTodo=${this.addTodo.bind(this)}></add-form>
+
+      <ul class="todo-list">
+        ${repeat(
+          this.todos,
+          (todo) => todo.id, // key
+          ({ id, title, isComplete, priority }) =>
+            html`<todo-item
+              .id=${id}
+              .title=${title}
+              .priority=${priority}
+              .isComplete=${isComplete}
+              @onDeleteTodo=${this.deleteTodo.bind(this)}
+              @onToggleTodo=${this.toggleTodo.bind(this)}
+              @onToggleTodoPriority=${this.togglePriority.bind(this)}
+            ></todo-item>`,
+        )}
+      </ul>
+    `;
+  }
+
+
   /**
    * Render lit-html template.
    */
   render() {
-    console.log("rerender")
-    // render(this.todoListTemplate(), this.root);
+    
     return this.todoListTemplate();
-    return html`<h1>Hello</h1>`
   }
 }
 

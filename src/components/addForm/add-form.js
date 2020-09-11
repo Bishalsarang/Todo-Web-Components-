@@ -63,18 +63,24 @@ console.log(this.shadowRoot.querySelector('.add-from__input'))
       }
 
       console.log("here")
-      this.dispatchEvent(
-        new CustomEvent('onAddTodo', {
-          detail: {
-            body: {
-              id: 'todo-' + Date.now().toString(),
-              title: this.newTodoElementTitle.value,
-              isComplete: false,
-              priority: 'low',
-            },
-          },
-        }));
+      // this.dispatchEvent(
+      //   new CustomEvent('onAddTodo', {
+      //     detail: {
+      //       body: {
+      //         id: 'todo-' + Date.now().toString(),
+      //         title: this.newTodoElementTitle.value,
+      //         isComplete: false,
+      //         priority: 'low',
+      //       },
+      //     },
+      //   }));
 
+      this.onAddTodo({
+        id: 'todo-' + Date.now().toString(),
+        title: this.newTodoElementTitle.value,
+        isComplete: false,
+        priority: 'low',
+      });
       this.newTodoElementTitle.value = '';
       this.hasError = false;
     };
