@@ -1,5 +1,7 @@
-import { html, render } from '../../../node_modules/lit-html';
+// import { html, render } from '../../../node_modules/lit-html';
 import { repeat } from '../../../node_modules/lit-html/directives/repeat.js';
+
+import {LitElement, html, css} from '@polymer/lit-element';
 
 import { PRIORITIES } from '../../constants/index.js';
 
@@ -7,34 +9,35 @@ import { PRIORITIES } from '../../constants/index.js';
  * Class todoList.
  * Custom web component ToDoList.
  */
-class TodoList extends HTMLElement {
+class TodoList extends LitElement {
   /**
    * Constructor.
    */
   constructor() {
     super();
 
-    this.root = this.attachShadow({
-      mode: 'open',
-    });
+    // this.root = this.attachShadow({
+    //   mode: 'open',
+    // });
 
     this.todos = [];
+    this.getLocalStorage();
   }
 
   /**
    * Runs when component is added.
    */
-  connectedCallback() {
-    // Load state from local storage
-    this.getLocalStorage();
-    this.render();
+  // connectedCallback() {
+  //   // Load state from local storage
+  //   // this.getLocalStorage();
+  //   // this.render();
 
-    this.listElement = this.root.querySelector('.todo-list');
+  //   // this.listElement = this.root.querySelector('.todo-list');
 
-    const addForm = this.root.querySelector('add-form');
+  //   // const addForm = this.root.querySelector('add-form');
 
-    addForm.addEventListener('onAddTodo', this.addTodo.bind(this));
-  }
+  //   // addForm.addEventListener('onAddTodo', this.addTodo.bind(this));
+  // }
 
   /**
    * Get saved state from localStorage.
@@ -158,7 +161,10 @@ class TodoList extends HTMLElement {
    * Render lit-html template.
    */
   render() {
-    render(this.todoListTemplate(), this.root);
+    console.log("here")
+    // render(this.todoListTemplate(), this.root);
+    return this.todoListTemplate();
+    return html`<h1>Hello</h1>`
   }
 }
 
