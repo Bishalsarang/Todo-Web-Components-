@@ -5,24 +5,15 @@ import { PRIORITIES } from '../../constants/index';
 
 class TodoItem extends HTMLElement {
   constructor() {
+
     super();
     this.root = this.attachShadow({
       mode: 'open',
     });
-  }
-
-  getTodoAttributes() {
-    this.id = this.getAttribute('id');
-    this.title = this.getAttribute('title');
-    this.priority = this.getAttribute('priority');
-
-    this.isComplete = this.getAttribute('isComplete') === 'true';
+    
   }
 
   connectedCallback() {
-    this.getTodoAttributes();
-
-   
     this.render();
   }
 
@@ -75,8 +66,6 @@ class TodoItem extends HTMLElement {
       this.render();
     };
   }
-
-  disconnectedCallback() {}
 
   todoItemTemplate(){
 

@@ -67,10 +67,10 @@ class TodoList extends HTMLElement {
           (todo) => todo.id, // key
           ({ id, title, isComplete, priority }) =>
             html`<todo-item
-              id=${id}
-              title=${title}
-              priority=${priority}
-              isComplete=${isComplete}
+              .id=${id}
+              .title=${title}
+              .priority=${priority}
+              .isComplete=${isComplete}
               @onDeleteTodo=${this.deleteTodo.bind(this)}
               @onToggleTodo=${this.toggleTodo.bind(this)}
               @onToggleTodoPriority=${this.togglePriority.bind(this)}
